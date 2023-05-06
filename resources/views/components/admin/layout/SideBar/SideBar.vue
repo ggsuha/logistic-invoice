@@ -2,13 +2,15 @@
   <div class="main-sidebar sidebar-style-2">
     <aside id="sidebar-wrapper">
       <div class="sidebar-brand">
-        <Link :href="$route('admin.dashboard')">Admin</Link>
+        <Link :href="$route('admin.dashboard')"><img src="@/images/logo.png" alt="logo" class="w-75" />
+        </Link>
       </div>
       <div class="sidebar-brand sidebar-brand-sm">
-        <Link :href="$route('admin.dashboard')">Admin</Link>
+        <Link :href="$route('admin.dashboard')"><img src="@/images/logo.png" alt="logo" class="w-50" />
+        </Link>
       </div>
       <ul class="sidebar-menu">
-        <SideBarHeader>Example</SideBarHeader>
+        <!-- <SideBarHeader>Example</SideBarHeader> -->
         <SideBarLink icon="fas fa-fire" :href="$route('admin.dashboard')" :active="routeIs('admin.dashboard')">
           Dashboard
         </SideBarLink>
@@ -65,4 +67,8 @@ if (import.meta.hot) {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.sidebar-brand {
+  height: fit-content;
+}
+</style>
