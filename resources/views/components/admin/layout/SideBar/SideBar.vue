@@ -2,11 +2,10 @@
   <div class="main-sidebar sidebar-style-2">
     <aside id="sidebar-wrapper">
       <div class="sidebar-brand">
-        <Link :href="$route('admin.dashboard')"><img src="@/images/logo-black.svg" alt="logo" class="w-75" /></Link>
+        <Link :href="$route('admin.dashboard')">Admin</Link>
       </div>
       <div class="sidebar-brand sidebar-brand-sm">
-        <Link :href="$route('admin.dashboard')"><img src="@/images/logo-black-square.svg" alt="logo" class="w-50" />
-        </Link>
+        <Link :href="$route('admin.dashboard')">Admin</Link>
       </div>
       <ul class="sidebar-menu">
         <SideBarHeader>Example</SideBarHeader>
