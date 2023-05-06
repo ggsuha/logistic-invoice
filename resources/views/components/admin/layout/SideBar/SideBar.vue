@@ -2,69 +2,36 @@
   <div class="main-sidebar sidebar-style-2">
     <aside id="sidebar-wrapper">
       <div class="sidebar-brand">
-        <Link :href="$route('admin.dashboard')"
-          ><img src="@/images/logo-black.svg" alt="logo" class="w-75"
-        /></Link>
+        <Link :href="$route('admin.dashboard')"><img src="@/images/logo-black.svg" alt="logo" class="w-75" /></Link>
       </div>
       <div class="sidebar-brand sidebar-brand-sm">
-        <Link :href="$route('admin.dashboard')"
-          ><img src="@/images/logo-black-square.svg" alt="logo" class="w-50"
-        /></Link>
+        <Link :href="$route('admin.dashboard')"><img src="@/images/logo-black-square.svg" alt="logo" class="w-50" />
+        </Link>
       </div>
       <ul class="sidebar-menu">
         <SideBarHeader>Example</SideBarHeader>
-        <SideBarLink
-          icon="fas fa-fire"
-          :href="$route('admin.dashboard')"
-          :active="routeIs('admin.dashboard')"
-        >
+        <SideBarLink icon="fas fa-fire" :href="$route('admin.dashboard')" :active="routeIs('admin.dashboard')">
           Dashboard
         </SideBarLink>
-        <SideBarDropdown
-          title="Other Page"
-          icon="fas fa-columns"
-          :active="false"
-        >
+        <SideBarDropdown title="Other Page" icon="fas fa-columns" :active="false">
           <SideBarLink :href="$route('admin.login')" :active="false">
             Login Page
           </SideBarLink>
-          <SideBarLink :href="$route('admin.login-2')" :active="false">
-            Login Page 2
-          </SideBarLink>
         </SideBarDropdown>
-        <SideBarDropdown
-          title="Components"
-          icon="fas fa-columns"
-          :active="routeIs('admin.component.*')"
-        >
-          <SideBarLink
-            :href="$route('admin.component.select2')"
-            :active="routeIs('admin.component.select2')"
-          >
+        <SideBarDropdown title="Components" icon="fas fa-columns" :active="routeIs('admin.component.*')">
+          <SideBarLink :href="$route('admin.component.select2')" :active="routeIs('admin.component.select2')">
             Select2
           </SideBarLink>
-          <SideBarLink
-            :href="$route('admin.component.modal')"
-            :active="routeIs('admin.component.modal')"
-          >
+          <SideBarLink :href="$route('admin.component.modal')" :active="routeIs('admin.component.modal')">
             Modal
           </SideBarLink>
-          <SideBarLink
-            :href="$route('admin.component.pagination')"
-            :active="routeIs('admin.component.pagination')"
-          >
+          <SideBarLink :href="$route('admin.component.pagination')" :active="routeIs('admin.component.pagination')">
             Pagination
           </SideBarLink>
-          <SideBarLink
-            :href="$route('admin.component.sweet-alert')"
-            :active="routeIs('admin.component.sweet-alert')"
-          >
+          <SideBarLink :href="$route('admin.component.sweet-alert')" :active="routeIs('admin.component.sweet-alert')">
             Sweet Alert
           </SideBarLink>
-          <SideBarLink
-            :href="$route('admin.component.input')"
-            :active="routeIs('admin.component.input')"
-          >
+          <SideBarLink :href="$route('admin.component.input')" :active="routeIs('admin.component.input')">
             Input
           </SideBarLink>
         </SideBarDropdown>
