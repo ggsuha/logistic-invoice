@@ -6,13 +6,17 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "barryvdh/laravel-snappy": "^1.0",
         "guzzlehttp/guzzle": "^7.2",
+        "h4cc/wkhtmltopdf-amd64": "0.12.x",
         "inertiajs/inertia-laravel": "^0.6.4",
         "innocenzi/laravel-vite": "0.2.*",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.1",
+        "milon/barcode": "^10.0",
+        "simplesoftwareio/simple-qrcode": "~4",
         "tightenco/ziggy": "^1.5"
     },
     "require-dev": {
