@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\Auth\LoginController;
+use App\Http\Controllers\Admin\ShipmentController;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,10 @@ Route::group(['middleware' => ['auth:web']], function () {
     Route::get('/', function () {
         return inertia('admin.dashboard.index');
     })->name('dashboard');
+
+    Route::resource('shipment', ShipmentController::class)->only([
+        'index', 'show'
+    ]);
 
     Route::get('test', function () {
         $barcode = base64_encode(DNS1DFacade::getBarcodeSVG('4445645656', 'UPCA', 2, 80));
