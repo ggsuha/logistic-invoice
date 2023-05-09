@@ -21,7 +21,7 @@ Route::group(['middleware' => ['auth:web']], function () {
     })->name('dashboard');
 
     Route::resource('shipment', ShipmentController::class)->only([
-        'index', 'show'
+        'index', 'create', 'store'
     ]);
 
     Route::get('test', function () {

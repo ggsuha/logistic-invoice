@@ -41,4 +41,12 @@ class Shipment extends Model
     {
         return $this->hasMany(Item::class);
     }
+
+    /**
+     * Get the items associated with the shipment.
+     */
+    public function item(): HasOne
+    {
+        return $this->hasOne(Item::class);
+    }
 }

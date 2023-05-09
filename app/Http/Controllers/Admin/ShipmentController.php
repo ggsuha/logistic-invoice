@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Shipment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ShipmentController extends Controller
 {
@@ -29,7 +30,7 @@ class ShipmentController extends Controller
      */
     public function create()
     {
-        //
+        return inertia('admin.shipment.form');
     }
 
     /**
@@ -40,7 +41,17 @@ class ShipmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        DB::transaction(function () use ($request) {
+            $shipment = Shipment::create($request->shipment);
+
+            $shipment->shipper()->create($request->shipper);
+            $shipment->item()->create(array_merge($request->item, ['dimension_unit' => 'cm']));
+            $receiver = $shipment->receiver()->create($request->receiver);
+
+            $receiver->address()->create($request->receiver['address']);
+        });
+
+        return redirect()->route('admin.shipment.index');
     }
 
     /**

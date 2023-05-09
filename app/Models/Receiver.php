@@ -35,6 +35,6 @@ class Receiver extends Model
      */
     public function address(): HasOne
     {
-        return $this->hasOne(Receiver::class);
+        return $this->hasOne(ReceiverAddress::class);
     }
 }
