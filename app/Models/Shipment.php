@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class Shipment extends Model
 {
@@ -48,5 +49,13 @@ class Shipment extends Model
     public function item(): HasOne
     {
         return $this->hasOne(Item::class);
+    }
+
+    /**
+     * Get the address associated with the shipment.
+     */
+    public function address(): HasOneThrough
+    {
+        return $this->hasOneThrough(ReceiverAddress::class, Receiver::class);
     }
 }

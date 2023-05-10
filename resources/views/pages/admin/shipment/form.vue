@@ -1,7 +1,7 @@
 <template layout="admin">
-  <Head title="Create Shipment" />
+  <Head :title="`${action} Shipment`" />
 
-  <PageSection header="Create Shipment">
+  <PageSection :header="`${action} Shipment`">
     <div class="row">
       <div class="col-lg-12 col-md-12 col-12 col-sm-12">
         <div class="card">
@@ -130,7 +130,7 @@
             <div class="form-group row mb-4">
               <div class="col-12">
                 <button class="btn btn-primary float-right" @click="submit">
-                  Add Shipment
+                  {{ action }} Shipment
                 </button>
               </div>
             </div>
@@ -143,62 +143,77 @@
 
 <script setup lang="ts">
 import PageSection from "@components/admin/layout/Page/PageSection.vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, useForm } from "@inertiajs/vue3";
 import { useRoute } from "@/scripts/utils/ziggy/useRoute";
 import { BKSelect } from "@timedoor/baskito-ui";
 import swal from "sweetalert";
+import { computed } from "vue";
 
 const { route } = useRoute();
 
-const weight_units = [
-  {
-    id: 'kg',
-  },
-  {
-    id: 'gram',
+const weight_units = [{ id: 'kg' }, { id: 'gram' }]
+const props = defineProps({
+  shipment: {
+    type: Object,
+    default: null
   }
-]
+})
+
+const action = computed(() => {
+  return props.shipment ? 'Edit' : 'Create';
+})
 
 const form = useForm({
   shipment: {
-    number: null,
-    air_waybill: null,
+    number: props.shipment?.shipment?.number,
+    air_waybill: props.shipment?.shipment?.air_waybill,
   },
   shipper: {
-    name: null,
-    phone: null,
+    name: props.shipment?.shipper?.name,
+    phone: props.shipment?.shipper?.phone,
   },
   receiver: {
-    name: null,
-    phone: null,
+    name: props.shipment?.receiver?.name,
+    phone: props.shipment?.receiver?.phone,
     address: {
-      street: '',
-      country: null,
-      postal_code: null,
+      street: props.shipment?.receiver?.address?.street ?? '',
+      country: props.shipment?.receiver?.address?.country,
+      postal_code: props.shipment?.receiver?.address?.postal_code,
     }
   },
   item: {
-    name: null,
-    quantity: null,
-    weight: null,
-    weight_unit: null,
-    custom_value: null,
-    x_axis: null,
-    y_axis: null,
-    z_axis: null,
-    dimension_unit: null,
+    name: props.shipment?.item?.name,
+    quantity: props.shipment?.item?.quantity,
+    weight: props.shipment?.item?.weight,
+    weight_unit: props.shipment?.item?.weight_unit,
+    custom_value: props.shipment?.item?.custom_value,
+    x_axis: props.shipment?.item?.x_axis,
+    y_axis: props.shipment?.item?.y_axis,
+    z_axis: props.shipment?.item?.z_axis,
+    dimension_unit: props.shipment?.item?.dimension_unit ?? 'cm',
   }
 });
 
 function submit() {
-  form.post(route("admin.shipment.store"), {
-    onSuccess: (response) => {
-      swal("Data berhasil ditambahkan.");
-    },
-    onFinish: () => {
-      //
-    }
-  });
+  if (props.shipment == null) {
+    form.post(route("admin.shipment.store"), {
+      onSuccess: (response) => {
+        swal("Data successfully added");
+      },
+      onFinish: () => {
+        //
+      }
+    });
+  } else {
+    form.patch(route("admin.shipment.update", { shipment: props.shipment.shipment.id }), {
+      onSuccess: (response) => {
+        swal("Data successfully updated.");
+      },
+      onFinish: () => {
+        //
+      }
+    });
+  }
 }
 </script>
 

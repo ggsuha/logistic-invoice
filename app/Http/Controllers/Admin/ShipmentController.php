@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ShipmentResource;
 use App\Models\Shipment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class ShipmentController extends Controller
@@ -41,26 +43,32 @@ class ShipmentController extends Controller
      */
     public function store(Request $request)
     {
-        DB::transaction(function () use ($request) {
+        DB::beginTransaction();
+        try {
             $shipment = Shipment::create($request->shipment);
 
             $shipment->shipper()->create($request->shipper);
-            $shipment->item()->create(array_merge($request->item, ['dimension_unit' => 'cm']));
+            $shipment->item()->create($request->item);
             $receiver = $shipment->receiver()->create($request->receiver);
 
             $receiver->address()->create($request->receiver['address']);
-        });
 
-        return redirect()->route('admin.shipment.index');
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+
+        return redirect()->route('admin.shipment.edit', ['shipment' => $shipment->id]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Shipment  $shipment
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Shipment $shipment)
     {
         //
     }
@@ -68,24 +76,47 @@ class ShipmentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Shipment  $shipment
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Shipment $shipment)
     {
-        //
+        $shipment->load([
+            'shipper',
+            'receiver.address',
+            'item',
+        ]);
+
+        return inertia('admin.shipment.form', [
+            'shipment' => ShipmentResource::make($shipment),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Shipment  $shipment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Shipment $shipment)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $shipment->update($request->shipment);
+
+            $shipment->shipper()->update($request->shipper);
+            $shipment->item()->update($request->item);
+            $shipment->receiver()->update(Arr::except($request->receiver, 'address'));
+            $shipment->address()->update($request->receiver['address']);
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+
+        return redirect()->route('admin.shipment.edit', ['shipment' => $shipment->id]);
     }
 
     /**
