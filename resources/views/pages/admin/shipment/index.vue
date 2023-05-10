@@ -30,12 +30,12 @@
                       <td>{{ shipment.receiver.name }}</td>
                       <td>{{ shipment.air_waybill }}</td>
                       <td>
-                        <Link :href="$route('admin.dashboard')" class="btn btn-success" title="Show"><i
-                          class="far fa-eye"></i>
+                        <Link :href="$route('admin.shipment.show', { shipment: shipment.id })" class="btn btn-success"
+                          title="Show"><i class="far fa-eye"></i>
                         </Link>&nbsp;
-                        <Link :href="$route('admin.dashboard')" class="btn btn-danger" title="Edit"><i
-                          class="fas fa-trash"></i>
-                        </Link>
+                        <button class="btn btn-danger" title="Edit" @click="remove(shipment.id)"><i
+                            class="fas fa-trash"></i>
+                        </button>
                       </td>
                     </tr>
                   </template>
@@ -60,7 +60,11 @@
 <script setup lang="ts">
 import Pagination from "@/views/components/pagination-section.vue";
 import PageSection from "@components/admin/layout/Page/PageSection.vue";
-import { Head, Link } from "@inertiajs/vue3";
+import { useRoute } from "@/scripts/utils/ziggy/useRoute";
+import { Head, Link, router } from "@inertiajs/vue3";
+import swal from "sweetalert";
+
+const { route } = useRoute();
 
 const props = defineProps({
   shipments: {
@@ -68,6 +72,23 @@ const props = defineProps({
     required: true,
   }
 })
+
+function remove(id: number) {
+  swal(`Are you sure?`, {
+    buttons: ["No", "Yes"],
+    dangerMode: true,
+  }).then((ok) => {
+    if (ok) {
+      router.delete(route('admin.shipment.destroy', { shipment: id }), {
+        preserveScroll: true,
+        preserveState: true,
+        onSuccess: () => {
+          swal('Data has been deleted!');
+        }
+      });
+    }
+  });
+}
 </script>
 
 <style scoped></style>

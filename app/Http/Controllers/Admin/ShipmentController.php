@@ -70,7 +70,16 @@ class ShipmentController extends Controller
      */
     public function show(Shipment $shipment)
     {
-        //
+        $shipment->load([
+            'shipper',
+            'receiver.address',
+            'item',
+        ]);
+
+        return inertia('admin.shipment.form', [
+            'shipment' => ShipmentResource::make($shipment),
+            'read_only' => true,
+        ]);
     }
 
     /**
@@ -116,17 +125,19 @@ class ShipmentController extends Controller
             throw $th;
         }
 
-        return redirect()->route('admin.shipment.edit', ['shipment' => $shipment->id]);
+        return redirect()->route('admin.shipment.show', ['shipment' => $shipment->id]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Shipment  $shipment
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Shipment $shipment)
     {
-        //
+        $shipment->delete();
+
+        return redirect()->back();
     }
 }
