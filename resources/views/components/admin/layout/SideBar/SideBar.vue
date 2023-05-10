@@ -14,28 +14,6 @@
         <SideBarLink icon="fas fa-fire" :href="$route('admin.dashboard')" :active="routeIs('admin.dashboard')">
           Dashboard
         </SideBarLink>
-        <SideBarDropdown title="Other Page" icon="fas fa-columns" :active="false">
-          <SideBarLink :href="$route('admin.login')" :active="false">
-            Login Page
-          </SideBarLink>
-        </SideBarDropdown>
-        <SideBarDropdown title="Components" icon="fas fa-columns" :active="routeIs('admin.component.*')">
-          <SideBarLink :href="$route('admin.component.select2')" :active="routeIs('admin.component.select2')">
-            Select2
-          </SideBarLink>
-          <SideBarLink :href="$route('admin.component.modal')" :active="routeIs('admin.component.modal')">
-            Modal
-          </SideBarLink>
-          <SideBarLink :href="$route('admin.component.pagination')" :active="routeIs('admin.component.pagination')">
-            Pagination
-          </SideBarLink>
-          <SideBarLink :href="$route('admin.component.sweet-alert')" :active="routeIs('admin.component.sweet-alert')">
-            Sweet Alert
-          </SideBarLink>
-          <SideBarLink :href="$route('admin.component.input')" :active="routeIs('admin.component.input')">
-            Input
-          </SideBarLink>
-        </SideBarDropdown>
       </ul>
     </aside>
   </div>
@@ -45,7 +23,6 @@
 import { nextTick, onMounted } from "vue";
 import initStisla from "@/scripts/utils/stisla";
 import SideBarLink from "./SideBarLink.vue";
-import SideBarHeader from "./SideBarHeader.vue";
 import SideBarDropdown from "./SideBarDropdown.vue";
 import { Link } from "@inertiajs/vue3";
 import { useRoute } from "@/scripts/utils/ziggy/useRoute";
