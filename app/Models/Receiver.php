@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Receiver extends Model
@@ -17,7 +17,6 @@ class Receiver extends Model
      * @var array
      */
     protected $fillable = [
-        'shipment_id',
         'name',
         'phone',
     ];
@@ -25,9 +24,9 @@ class Receiver extends Model
     /**
      * Get the shipment associated with the receiver.
      */
-    public function shipment(): BelongsTo
+    public function shipment(): HasMany
     {
-        return $this->belongsTo(Shipment::class);
+        return $this->hasMany(Shipment::class);
     }
 
     /**

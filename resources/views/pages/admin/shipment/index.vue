@@ -1,12 +1,12 @@
 <template layout="admin">
-  <Head title="Dashboard" />
+  <Head title="List Order" />
 
-  <PageSection header="Dashboard Page" :back-link="$route('admin.dashboard')">
+  <PageSection header="List Order">
     <div class="row">
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h4>Shipment</h4>
+            <h4>Order</h4>
           </div>
           <div class="card-body">
             <div class="table-responsive">

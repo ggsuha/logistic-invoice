@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('receiver_id');
             $table->foreign('receiver_id')->references('id')->on('receivers')->onDelete('cascade');
+            $table->unsignedBigInteger('postal_code_id');
+            $table->foreign('postal_code_id')->references('id')->on('postal_codes');
             $table->string('street')->nullable();
-            $table->string('postal_code')->nullable();
-            $table->string('country')->nullable();
             $table->timestamps();
         });
     }

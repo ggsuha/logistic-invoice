@@ -17,6 +17,7 @@ class ReceiverAddress extends Model
      */
     protected $fillable = [
         'receiver_id',
+        'postal_code_id',
         'street',
         'postal_code',
         'country',
@@ -28,5 +29,13 @@ class ReceiverAddress extends Model
     public function receiver(): BelongsTo
     {
         return $this->belongsTo(Receiver::class);
+    }
+
+    /**
+     * Get the postal code associated with the address.
+     */
+    public function postalCode(): BelongsTo
+    {
+        return $this->belongsTo(PostalCode::class);
     }
 }

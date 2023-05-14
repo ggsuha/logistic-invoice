@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\Auth\LoginController;
+use App\Http\Controllers\Admin\PostalCodeController;
 use App\Http\Controllers\Admin\ShipmentController;
 use App\Http\Controllers\Admin\ShipmentInvoiceController;
 use Illuminate\Support\Facades\Route;
@@ -24,3 +25,5 @@ Route::group(['middleware' => ['auth:web']], function () {
 
     Route::delete('logout', [LoginController::class, 'logout'])->name('logout');
 });
+
+Route::get('/postal-code/{id}', [PostalCodeController::class, 'index'])->name('postalcode');

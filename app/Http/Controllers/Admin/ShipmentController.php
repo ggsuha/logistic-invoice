@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ShipmentResource;
+use App\Models\Category;
+use App\Models\Country;
+use App\Models\Receiver;
 use App\Models\Shipment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -32,7 +35,10 @@ class ShipmentController extends Controller
      */
     public function create()
     {
-        return inertia('admin.shipment.form');
+        $countries = Country::select('id', 'name')->get();
+        $categories = Category::select('id', 'name')->get();
+
+        return inertia('admin.shipment.form', compact('countries', 'categories'));
     }
 
     /**
@@ -45,19 +51,25 @@ class ShipmentController extends Controller
     {
         DB::beginTransaction();
         try {
-            $shipment = Shipment::create($request->shipment);
+            if (isset($request->receiver['id'])) {
+                $receiver = Receiver::findOrFail($request->receiver['id']);
+                $receiver->update($request->receiver);
+                $receiver->address()->update($request->receiver['address']);
+            } else {
+                $receiver = Receiver::create($request->receiver);
+                $receiver->address()->create($request->receiver['address']);
+            }
 
+            $shipment = $receiver->shipment()->create($request->shipment);
             $shipment->shipper()->create($request->shipper);
-            $shipment->item()->create($request->item);
-            $receiver = $shipment->receiver()->create($request->receiver);
-
-            $receiver->address()->create($request->receiver['address']);
 
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;
         }
+
+        dd('haha');
 
         return redirect()->route('admin.shipment.edit', ['shipment' => $shipment->id]);
     }

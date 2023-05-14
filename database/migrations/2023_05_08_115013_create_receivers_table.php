@@ -15,8 +15,6 @@ return new class extends Migration
     {
         Schema::create('receivers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('shipment_id');
-            $table->foreign('shipment_id')->references('id')->on('shipments')->onDelete('cascade');
             $table->string('name');
             $table->string('phone');
             $table->timestamps();

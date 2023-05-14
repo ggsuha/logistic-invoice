@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Shipper extends Model
+class PostalCode extends Model
 {
     use HasFactory;
 
@@ -16,17 +16,17 @@ class Shipper extends Model
      * @var array
      */
     protected $fillable = [
-        'shipment_id',
-        'name',
-        'phone',
-        'address',
+        'country_id',
+        'postal_code',
+        'city',
+        'state',
     ];
 
     /**
-     * Get the shipment associated with the shipper.
+     * Get the country associated with the detail.
      */
-    public function shipment(): BelongsTo
+    public function country(): BelongsTo
     {
-        return $this->belongsTo(Shipment::class);
+        return $this->belongsTo(Country::class);
     }
 }

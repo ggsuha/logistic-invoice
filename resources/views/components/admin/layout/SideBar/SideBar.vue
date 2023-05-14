@@ -14,6 +14,12 @@
         <SideBarLink icon="fas fa-fire" :href="$route('admin.dashboard')" :active="routeIs('admin.dashboard')">
           Dashboard
         </SideBarLink>
+        <SideBarLink icon="fas fa-list" :href="$route('admin.shipment.index')" :active="routeIs('admin.shipment.index')">
+          Order
+        </SideBarLink>
+        <SideBarLink icon="fas fa-user" href="#">
+          Akun
+        </SideBarLink>
       </ul>
     </aside>
   </div>

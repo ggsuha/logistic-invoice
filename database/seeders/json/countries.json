@@ -1,0 +1,32 @@
+[
+    {
+        "name": "South Korea",
+        "list": [
+            {
+                "postal_code": "123456",
+                "city": "Seoul",
+                "state": null
+            },
+            {
+                "postal_code": "654321",
+                "city": "Daegu",
+                "state": "Ini state"
+            }
+        ]
+    },
+    {
+        "name": "Netherland",
+        "list": [
+            {
+                "postal_code": "33333",
+                "city": "Amsterdam",
+                "state": null
+            },
+            {
+                "postal_code": "1111",
+                "city": "Rotterdam",
+                "state": "Ini state"
+            }
+        ]
+    }
+]

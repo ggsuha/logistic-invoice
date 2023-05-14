@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
@@ -13,11 +14,31 @@ class Shipment extends Model
     use HasFactory;
 
     /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::creating(function (Shipment $shipment) {
+            $shipment->number = time();
+        });
+    }
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['number', 'air_waybill'];
+    protected $fillable = [
+        'user_id',
+        'category_id',
+        'number',
+        'air_waybill',
+        'weight',
+        'content',
+        'pcs',
+        'value',
+        'dimension',
+    ];
 
     /**
      * Get the shipper associated with the shipment.
@@ -30,9 +51,17 @@ class Shipment extends Model
     /**
      * Get the receiver/recipient associated with the shipment.
      */
-    public function receiver(): HasOne
+    public function receiver(): BelongsTo
     {
-        return $this->hasOne(Receiver::class);
+        return $this->belongsTo(Receiver::class);
+    }
+
+    /**
+     * Get the category associated with the shipment.
+     */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 
     /**
