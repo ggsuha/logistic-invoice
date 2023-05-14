@@ -22,7 +22,7 @@ class Category extends Model
     /**
      * Get the shipment associated with the category.
      */
-    public function shipment(): HasMany
+    public function shipments(): HasMany
     {
         return $this->hasMany(Shipment::class);
     }

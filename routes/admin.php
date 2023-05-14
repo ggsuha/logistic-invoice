@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Admin\Auth\LoginController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PostalCodeController;
 use App\Http\Controllers\Admin\ShipmentController;
 use App\Http\Controllers\Admin\ShipmentInvoiceController;
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['guest:web']], function () {
@@ -20,6 +22,7 @@ Route::group(['middleware' => ['auth:web']], function () {
     })->name('dashboard');
 
     Route::resource('shipment', ShipmentController::class)->except(['show', 'destroy']);
+    Route::resource('category', CategoryController::class)->except(['show']);
 
     Route::get('shipment/{shipment}/invoice', [ShipmentInvoiceController::class, 'print'])->name('shipment.invoice');
 

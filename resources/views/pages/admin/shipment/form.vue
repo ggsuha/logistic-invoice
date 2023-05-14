@@ -256,7 +256,7 @@ function submit() {
   if (props.shipment == null) {
     form.post(route("admin.shipment.store"), {
       onSuccess: (response) => {
-        swal("Data successfully added");
+        swal("Data berhasil disimpan");
       },
       onFinish: () => {
         //
@@ -265,7 +265,7 @@ function submit() {
   } else {
     form.patch(route("admin.shipment.update", { shipment: props.shipment.shipment.id }), {
       onSuccess: (response) => {
-        swal("Data successfully updated.");
+        swal("Data berhasil diubah.");
       },
       onFinish: () => {
         //
