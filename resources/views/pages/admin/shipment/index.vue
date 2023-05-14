@@ -38,7 +38,7 @@
                       <td>
                         <Link :href="$route('admin.shipment.edit', { shipment: shipment.id })" class="btn btn-success"
                           title="Lihat"><i class="far fa-eye"></i>
-                        </Link>&nbsp;
+                        </Link>
                       </td>
                     </tr>
                   </template>

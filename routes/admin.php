@@ -18,10 +18,6 @@ Route::group(['middleware' => ['guest:web']], function () {
 });
 
 Route::group(['middleware' => ['auth:web']], function () {
-    Route::get('/', function () {
-        return inertia('admin.dashboard.index');
-    })->name('dashboard');
-
     Route::resource('shipment', ShipmentController::class)->except(['show', 'destroy']);
 
     Route::post('shipment/{shipment}/items', [ShipmentItemController::class, 'store'])->name('shipment.item.store');

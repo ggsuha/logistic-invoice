@@ -38,7 +38,7 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        return to_route('admin.dashboard');
+        return to_route('admin.shipment.index');
     }
 
     /**
@@ -49,7 +49,7 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        if (! $this->guard()->check()) {
+        if (!$this->guard()->check()) {
             return to_route('admin.login');
         }
 

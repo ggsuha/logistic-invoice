@@ -7,6 +7,11 @@
         <div class="card">
           <div class="card-header">
             <h4>Kategori/Tipe</h4>
+            <div class="kanan">
+              <Link :href="$route('admin.category.create')" class="btn btn-primary" title="Tambah Kategori">Tambah
+              Kategori
+              </Link>
+            </div>
           </div>
           <div class="card-body">
             <div class="table-responsive">
@@ -87,4 +92,10 @@ function remove(id: number) {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.kanan {
+  display: flex;
+  width: 100%;
+  flex-direction: row-reverse;
+}
+</style>
