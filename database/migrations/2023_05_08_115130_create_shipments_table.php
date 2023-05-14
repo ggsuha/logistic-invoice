@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreign('category_id')->references('id')->on('categories');
             $table->string('number');
             $table->string('air_waybill')->nullable();
-            $table->integer('weight');
+            $table->float('weight');
             $table->string('content');
             $table->string('pcs');
             $table->integer('value');

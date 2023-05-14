@@ -61,7 +61,7 @@ class ShipmentController extends Controller
                 $receiver->address()->create($request->receiver['address']);
             }
 
-            $shipment = $receiver->shipment()->create($request->shipment);
+            $shipment = $receiver->shipments()->create($request->shipment);
             $shipment->shipper()->create($request->shipper);
 
             DB::commit();
@@ -86,6 +86,8 @@ class ShipmentController extends Controller
             'receiver.address.postalCode.country',
         ]);
 
+        $items = $shipment->items()->paginate(10);
+
         $countries = Country::select('id', 'name')->get();
         $categories = Category::select('id', 'name')->get();
 
@@ -93,6 +95,7 @@ class ShipmentController extends Controller
             'shipment' => ShipmentResource::make($shipment),
             'countries' => $countries,
             'categories' => $categories,
+            'items' => $items,
         ]);
     }
 

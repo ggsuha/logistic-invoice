@@ -17,15 +17,10 @@ class Item extends Model
      */
     protected $fillable = [
         'shipment_id',
-        'name',
+        'description',
         'quantity',
-        'weight',
-        'weight_unit',
-        'custom_value',
-        'x_axis',
-        'y_axis',
-        'z_axis',
-        'dimension_unit',
+        'unit',
+        'value',
     ];
 
     /**

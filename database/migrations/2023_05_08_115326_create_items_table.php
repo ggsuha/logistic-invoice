@@ -17,15 +17,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('shipment_id');
             $table->foreign('shipment_id')->references('id')->on('shipments')->onDelete('cascade');
-            $table->string('name');
+            $table->string('description');
             $table->integer('quantity')->default(1);
-            $table->integer('weight');
-            $table->string('weight_unit')->default('kg');
-            $table->string('custom_value')->nullable();
-            $table->string('x_axis')->default(1);
-            $table->string('y_axis')->default(1);
-            $table->string('z_axis')->default(1);
-            $table->string('dimension_unit')->default('cm');
+            $table->string('unit');
+            $table->string('value')->nullable();
             $table->timestamps();
         });
     }

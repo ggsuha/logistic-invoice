@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreign('shipment_id')->references('id')->on('shipments')->onDelete('cascade');
             $table->string('name');
             $table->string('phone');
+            $table->text('address')->nullable();
             $table->timestamps();
         });
     }

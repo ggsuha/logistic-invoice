@@ -143,9 +143,103 @@
       </div>
     </div>
 
-    <PageTitle>Daftar Item</PageTitle>
+    <template v-if="shipment">
+      <PageTitle>Daftar Item</PageTitle>
 
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="float-right mb-3">
+                <button type="button" data-toggle="modal" data-target="#item-form" class="btn btn-primary">Tambah
+                  Item</button>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th style="width: 5px">No</th>
+                      <th>Deskripsi</th>
+                      <th>Quantity</th>
+                      <th>Unit</th>
+                      <th>Value per Unit</th>
+                      <th>Total Value</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <template v-if="(items?.data?.length > 0)">
+                      <tr v-for="item, index in items.data" :key="item.id">
+                        <td>{{ items.from + index }}</td>
+                        <td>{{ item.description }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td style="text-transform: capitalize;">{{ item.unit }}</td>
+                        <td>{{ item.value }}</td>
+                        <td>{{ item.quantity * item.value }}</td>
+                        <td>
+                          <button class="btn btn-danger" title="Hapus"><i class="fas fa-trash"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </template>
+
+                    <template v-else>
+                      <tr class="text-center">
+                        <td colspan="10">Tidak ada data</td>
+                      </tr>
+                    </template>
+
+                  </tbody>
+                </table>
+              </div>
+              <PaginationSection :links="items?.links" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
   </PageSection>
+
+  <div v-if="shipment" class="modal fade" tabindex="-1" role="dialog" id="item-form">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Tambah Item</h5>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="item-description">Deskripsi</label>
+              <input id="item-description" v-model="modalForm.description" type="text" class="form-control"
+                placeholder="Contoh: Kertas" />
+            </div>
+            <div class="form-group">
+              <label for="item-quantity">Quantity</label>
+              <input id="item-quantity" v-model.number="modalForm.quantity" type="text" class="form-control"
+                placeholder="Contoh: 10" />
+            </div>
+            <div class="form-group">
+              <label for="item-unit">Satuan Unit</label>
+              <BKSelect id="item-unit" v-model="modalForm.unit" :data-placeholder="'Pilih satuan unit'" allow-empty>
+                <option v-for="option in unit_options" :key="option.id" :value="option.id">{{ option.text }}</option>
+              </BKSelect>
+            </div>
+            <div class="form-group">
+              <label for="item-value">Value per Unit</label>
+              <input id="item-value" v-model="modalForm.value" type="text" class="form-control"
+                placeholder="Contoh: 100" />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer bg-whitesmoke br">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button class="btn btn-primary float-right" @click="modalSubmit">
+            Tambah
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -157,7 +251,7 @@ import swal from "sweetalert";
 import { computed, onMounted, ref, watch } from "vue";
 import axios from "axios";
 import PageTitle from "@/views/components/admin/layout/Page/PageTitle.vue";
-import HuSelect from "@/views/components/HuSelect.vue";
+import PaginationSection from "@/views/components/pagination-section.vue";
 
 const { route } = useRoute();
 
@@ -173,10 +267,19 @@ const props = defineProps({
   categories: {
     type: Object,
     required: true,
+  },
+  items: {
+    type: Object,
+    default: []
   }
 })
 
 const postal_codes = ref([{}]);
+const unit_options = ref([
+  { id: 'set', text: "Set" },
+  { id: 'pack', text: "Pack" },
+  { id: 'pcs', text: "Pcs" }
+]);
 
 const action = computed(() => {
   return props.shipment ? 'Ubah' : 'Buat';
@@ -221,9 +324,15 @@ const form = useForm({
   // }
 });
 
-onMounted(() => {
-  console.log(form.receiver.address.postal_code_id);
 
+const modalForm = useForm({
+  description: null,
+  quantity: null,
+  unit: null,
+  value: null,
+});
+
+onMounted(() => {
   if (props.shipment != null) {
     getPostalCodes(form.country_id)
     form.receiver.address.postal_code_id = props.shipment?.receiver?.address?.postal_code_id
@@ -272,6 +381,25 @@ function submit() {
       }
     });
   }
+}
+
+function modalSubmit() {
+  modalForm.post(route("admin.shipment.item.store", { shipment: props.shipment.shipment.id }), {
+    onSuccess: (response) => {
+      swal("Item berhasil ditambahkan.");
+      modalClose();
+    },
+    onFinish: () => {
+      //
+    }
+  });
+}
+
+function modalClose() {
+  var closeButton = document.querySelector('button[data-dismiss="modal"]');
+  closeButton.click();
+
+  modalForm.reset();
 }
 </script>
 
