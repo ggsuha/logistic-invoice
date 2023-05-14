@@ -52,8 +52,8 @@
             </div>
             <div class="form-group">
               <label for="receiver_country">Negara</label>
-              <BKSelect id="receiver_country" v-model.number="form.receiver.address.country_id"
-                :data-placeholder="'Pilih negara tujuan'" allow-empty>
+              <BKSelect id="receiver_country" v-model.number="form.country_id" :data-placeholder="'Pilih negara tujuan'"
+                allow-empty>
                 <option v-for="option in countries" :key="option.id" :value="option.id">{{ option.name }}</option>
               </BKSelect>
             </div>
@@ -204,10 +204,10 @@ const form = useForm({
     phone: props.shipment?.receiver?.phone,
     address: {
       street: props.shipment?.receiver?.address?.street ?? '',
-      country_id: props.shipment?.receiver?.address?.country_id,
       postal_code_id: props.shipment?.receiver?.address?.postal_code_id,
     }
   },
+  country_id: props.shipment?.receiver?.address?.country_id,
   // item: {
   //   name: props.shipment?.item?.name,
   //   quantity: props.shipment?.item?.quantity,
@@ -225,12 +225,12 @@ onMounted(() => {
   console.log(form.receiver.address.postal_code_id);
 
   if (props.shipment != null) {
-    getPostalCodes(form.receiver.address.country_id)
+    getPostalCodes(form.country_id)
     form.receiver.address.postal_code_id = props.shipment?.receiver?.address?.postal_code_id
   }
 })
 
-watch(() => form.receiver.address.country_id, async (id) => {
+watch(() => form.country_id, async (id) => {
   if (id == null) {
     postal_codes.value = [{}]
 

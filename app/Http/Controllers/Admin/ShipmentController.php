@@ -9,7 +9,6 @@ use App\Models\Country;
 use App\Models\Receiver;
 use App\Models\Shipment;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class ShipmentController extends Controller
@@ -21,9 +20,11 @@ class ShipmentController extends Controller
      */
     public function index()
     {
-        $shipments = Shipment::with(['receiver', 'shipper'])
-            ->select(['id', 'number', 'air_waybill'])
-            ->paginate(3);
+        $shipments = Shipment::with([
+            'receiver.address.postalCode.country',
+            'shipper',
+            'category'
+        ])->paginate(10);
 
         return inertia('admin.shipment.index', compact('shipments'));
     }
@@ -69,29 +70,7 @@ class ShipmentController extends Controller
             throw $th;
         }
 
-        dd('haha');
-
         return redirect()->route('admin.shipment.edit', ['shipment' => $shipment->id]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Shipment  $shipment
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Shipment $shipment)
-    {
-        $shipment->load([
-            'shipper',
-            'receiver.address',
-            'item',
-        ]);
-
-        return inertia('admin.shipment.form', [
-            'shipment' => ShipmentResource::make($shipment),
-            'read_only' => true,
-        ]);
     }
 
     /**
@@ -104,12 +83,16 @@ class ShipmentController extends Controller
     {
         $shipment->load([
             'shipper',
-            'receiver.address',
-            'item',
+            'receiver.address.postalCode.country',
         ]);
+
+        $countries = Country::select('id', 'name')->get();
+        $categories = Category::select('id', 'name')->get();
 
         return inertia('admin.shipment.form', [
             'shipment' => ShipmentResource::make($shipment),
+            'countries' => $countries,
+            'categories' => $categories,
         ]);
     }
 
@@ -124,12 +107,18 @@ class ShipmentController extends Controller
     {
         DB::beginTransaction();
         try {
-            $shipment->update($request->shipment);
 
+            if (isset($request->receiver['id'])) {
+                $receiver = Receiver::findOrFail($request->receiver['id']);
+                $receiver->update($request->receiver);
+                $receiver->address()->update($request->receiver['address']);
+            } else {
+                $receiver = Receiver::create($request->receiver);
+                $receiver->address()->create($request->receiver['address']);
+            }
+
+            $shipment->update($request->shipment);
             $shipment->shipper()->update($request->shipper);
-            $shipment->item()->update($request->item);
-            $shipment->receiver()->update(Arr::except($request->receiver, 'address'));
-            $shipment->address()->update($request->receiver['address']);
 
             DB::commit();
         } catch (\Throwable $th) {
@@ -137,7 +126,7 @@ class ShipmentController extends Controller
             throw $th;
         }
 
-        return redirect()->route('admin.shipment.show', ['shipment' => $shipment->id]);
+        return redirect()->back();
     }
 
     /**

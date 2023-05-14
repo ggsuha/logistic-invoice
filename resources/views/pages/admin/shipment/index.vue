@@ -14,10 +14,12 @@
                 <thead>
                   <tr>
                     <th style="width: 5px">No</th>
-                    <th>ID Number</th>
-                    <th>Shipper</th>
-                    <th>Receiver</th>
-                    <th>Air Waybill</th>
+                    <th>Tanggal</th>
+                    <th>Nomor Resi</th>
+                    <th>Pengirim</th>
+                    <th>Penerima</th>
+                    <th>Tujuan</th>
+                    <th>Detail</th>
                     <th>Aksi</th>
                   </tr>
                 </thead>
@@ -25,17 +27,18 @@
                   <template v-if="(shipments.data.length > 0)">
                     <tr v-for="shipment, index in shipments.data" :key="shipment.id">
                       <td>{{ shipments.from + index }}</td>
-                      <td>{{ shipment.number }}</td>
-                      <td>{{ shipment.shipper.name }}</td>
-                      <td>{{ shipment.receiver.name }}</td>
-                      <td>{{ shipment.air_waybill }}</td>
+                      <td>{{ moment(shipment.created_at).locale("id").tz("Asia/Jakarta").format('YYYY-MM-DD') }}</td>
+                      <td>{{ shipment.air_waybill ?? '-' }}</td>
+                      <td>{{ shipment.shipper.name }} <br>{{ shipment.shipper.phone }}</td>
+                      <td>{{ shipment.receiver.name }} <br>{{ shipment.receiver.phone }}<br>{{
+                        shipment.receiver.address.street
+                      }}</td>
+                      <td>{{ shipment.receiver.address.postal_code.country.name }}</td>
+                      <td>Berat: {{ shipment.weight }} kg<br>Qty: {{ shipment.pcs }}</td>
                       <td>
-                        <Link :href="$route('admin.shipment.show', { shipment: shipment.id })" class="btn btn-success"
-                          title="Show"><i class="far fa-eye"></i>
+                        <Link :href="$route('admin.shipment.edit', { shipment: shipment.id })" class="btn btn-success"
+                          title="Lihat"><i class="far fa-eye"></i>
                         </Link>&nbsp;
-                        <button class="btn btn-danger" title="Edit" @click="remove(shipment.id)"><i
-                            class="fas fa-trash"></i>
-                        </button>
                       </td>
                     </tr>
                   </template>
@@ -61,8 +64,9 @@
 import Pagination from "@/views/components/pagination-section.vue";
 import PageSection from "@components/admin/layout/Page/PageSection.vue";
 import { useRoute } from "@/scripts/utils/ziggy/useRoute";
-import { Head, Link, router } from "@inertiajs/vue3";
-import swal from "sweetalert";
+import { Head, Link } from "@inertiajs/vue3";
+import moment from "moment-timezone";
+import "moment/dist/locale/id";
 
 const { route } = useRoute();
 
@@ -72,23 +76,6 @@ const props = defineProps({
     required: true,
   }
 })
-
-function remove(id: number) {
-  swal(`Are you sure?`, {
-    buttons: ["No", "Yes"],
-    dangerMode: true,
-  }).then((ok) => {
-    if (ok) {
-      router.delete(route('admin.shipment.destroy', { shipment: id }), {
-        preserveScroll: true,
-        preserveState: true,
-        onSuccess: () => {
-          swal('Data has been deleted!');
-        }
-      });
-    }
-  });
-}
 </script>
 
 <style scoped></style>

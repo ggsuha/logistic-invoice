@@ -19,7 +19,7 @@ Route::group(['middleware' => ['auth:web']], function () {
         return inertia('admin.dashboard.index');
     })->name('dashboard');
 
-    Route::resource('shipment', ShipmentController::class);
+    Route::resource('shipment', ShipmentController::class)->except(['show', 'destroy']);
 
     Route::get('shipment/{shipment}/invoice', [ShipmentInvoiceController::class, 'print'])->name('shipment.invoice');
 
