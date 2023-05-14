@@ -24,6 +24,14 @@ class Item extends Model
     ];
 
     /**
+     * Get total value.
+     */
+    public function getTotalValueAttribute()
+    {
+        return $this->value * $this->quantity;
+    }
+
+    /**
      * Get the shipment associated with the item.
      */
     public function shipment(): BelongsTo

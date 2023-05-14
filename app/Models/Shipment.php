@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -45,6 +46,40 @@ class Shipment extends Model
         'value',
         'dimension',
     ];
+
+    /**
+     * Get the user's first name.
+     */
+    protected function allItems(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $items = [];
+
+                foreach ($this->items as $item) {
+                    $items[] = $item->description;
+                }
+
+                return implode(', ', $items);
+            }
+        );
+    }
+
+    /**
+     * Sum item quantity.
+     */
+    public function getSumQuantityAttribute()
+    {
+        return $this->items->sum('quantity');
+    }
+
+    /**
+     * Sum total value quantity.
+     */
+    public function getSumTotalValueAttribute()
+    {
+        return $this->items->sum('total_value');
+    }
 
     /**
      * Get the shipper associated with the shipment.

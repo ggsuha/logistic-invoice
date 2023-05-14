@@ -139,14 +139,14 @@
         <div class="two">
             <div class="row upper">
                 <h2>
-                    Global Logistic
+                    {{ $shipment->shipper->name }}
                 </h2>
             </div>
             <div class="row padding-0 flex">
                 <div class="shipper">
                     <strong>Shipper:</strong><br>
-                    Global Logistic <br>
-                    085843439805
+                    {{ $shipment->shipper->name }} <br>
+                    {{ $shipment->shipper->phone }}
                 </div>
                 <div class="code">
                     TPE
@@ -155,38 +155,39 @@
             <div class="row">
                 <strong>Receiver:</strong><br>
                 <div class="flex">
-                    <div class="upper left">Sri Rahayu NINGSIH</div>
-                    <div class="right">LD01173819</div>
+                    <div class="upper left">{{ $shipment->receiver->name }}</div>
+                    <div class="right">{{ $shipment->number }}</div>
                 </div>
-                085843439805 <br>
-                Perum Xxx, Jl. Candi Mendut No.36, RT 011/RW 005 (Belakang Polsek Lowokwaru), Kel. Mojolangu, Kec.
-                Lowokwaru, Kota Malang, Jawa Timur, 65142 <br>
+                {{ $shipment->receiver->phone }} <br>
+                {{ $shipment->receiver->address->street }} <br>
                 <div class="mt-10">
-                    Taiwan
+                    {{ $shipment->receiver->address->postalCode->postal_code }}<br>
+                    {{ $shipment->receiver->address->postalCode->city }}<br>
+                    {{ $shipment->receiver->address->postalCode->country->name }}
                 </div>
             </div>
             <div class="row">
                 <div class="flex">
                     <div class="left">
-                        <strong>Description of Goods: FOOD</strong><br>
-                        TEPUNG
+                        <strong>Description of Goods: {{ $shipment->category->name }}</strong><br>
+                        {{ $shipment->all_items }}
                         <br><br>
                         <strong>
                             <table>
                                 <tr>
                                     <td>Quantity</td>
                                     <td>:</td>
-                                    <td>1 Pcs</td>
+                                    <td>{{ $shipment->pcs }} Pcs</td>
                                 </tr>
                                 <tr>
                                     <td>Weight</td>
                                     <td>:</td>
-                                    <td>4 Kg</td>
+                                    <td>{{ $shipment->weight }} Kg</td>
                                 </tr>
                                 <tr>
                                     <td>Custom Value</td>
                                     <td>:</td>
-                                    <td>100 $</td>
+                                    <td>{{ $shipment->value }} $</td>
                                 </tr>
                             </table>
                         </strong>
@@ -212,14 +213,14 @@
         <div class="two">
             <div class="row upper">
                 <h2>
-                    Global Logistic
+                    {{ $shipment->shipper->name }}
                 </h2>
             </div>
             <div class="row padding-0 flex">
                 <div class="shipper">
                     <strong>Shipper:</strong><br>
-                    Global Logistic <br>
-                    085843439805
+                    {{ $shipment->shipper->name }} <br>
+                    {{ $shipment->shipper->phone }}
                 </div>
                 <div class="code">
                     TPE
@@ -228,38 +229,39 @@
             <div class="row">
                 <strong>Receiver:</strong><br>
                 <div class="flex">
-                    <div class="upper left">Sri Rahayu NINGSIH</div>
-                    <div class="right">LD01173819</div>
+                    <div class="upper left">{{ $shipment->receiver->name }}</div>
+                    <div class="right">{{ $shipment->number }}</div>
                 </div>
-                085843439805 <br>
-                Perum Xxx, Jl. Candi Mendut No.36, RT 011/RW 005 (Belakang Polsek Lowokwaru), Kel. Mojolangu, Kec.
-                Lowokwaru, Kota Malang, Jawa Timur, 65142 <br>
+                {{ $shipment->receiver->phone }} <br>
+                {{ $shipment->receiver->address->street }} <br>
                 <div class="mt-10">
-                    Taiwan
+                    {{ $shipment->receiver->address->postalCode->postal_code }}<br>
+                    {{ $shipment->receiver->address->postalCode->city }}<br>
+                    {{ $shipment->receiver->address->postalCode->country->name }}
                 </div>
             </div>
             <div class="row">
                 <div class="flex">
                     <div class="left">
-                        <strong>Description of Goods: FOOD</strong><br>
-                        TEPUNG
+                        <strong>Description of Goods: {{ $shipment->category->name }}</strong><br>
+                        {{ $shipment->all_items }}
                         <br><br>
                         <strong>
                             <table>
                                 <tr>
                                     <td>Quantity</td>
                                     <td>:</td>
-                                    <td>1 Pcs</td>
+                                    <td>{{ $shipment->pcs }} Pcs</td>
                                 </tr>
                                 <tr>
                                     <td>Weight</td>
                                     <td>:</td>
-                                    <td>4 Kg</td>
+                                    <td>{{ $shipment->weight }} Kg</td>
                                 </tr>
                                 <tr>
                                     <td>Custom Value</td>
                                     <td>:</td>
-                                    <td>100 $</td>
+                                    <td>{{ $shipment->value }} $</td>
                                 </tr>
                             </table>
                         </strong>
@@ -288,26 +290,26 @@
         <h3 class="upper center">
             comercial invoice
         </h3>
-        <div class="end p-5 f-12"><span>Jakarta, 23 Mei 2023</span></div>
+        <div class="end p-5 f-12"><span>Jakarta, {{ $now->translatedFormat('d F Y') }}</span></div>
         <div class="p-5">
             <table>
                 <tr>
                     <td style="width: 14%">Consignee</td>
-                    <td style="width: 50%">: <span class="upper">sri rahayu ningsih</span></td>
+                    <td style="width: 50%">: <span class="upper">{{ $shipment->receiver->name }}</span></td>
                     <td style="width: 14%">ID Number</td>
-                    <td>: LD01173819</td>
+                    <td>: {{ $shipment->number }}</td>
                 </tr>
                 <tr>
                     <td style="width: 14%">No Air Waybill</td>
-                    <td style="width: 50%">: 123456789</td>
+                    <td style="width: 50%">: {{ $shipment->air_waybill }}</td>
                     <td style="width: 14%">No of Pieces</td>
-                    <td>: 1</td>
+                    <td>: {{ $shipment->pcs }}</td>
                 </tr>
                 <tr>
                     <td style="width: 14%">Weight</td>
-                    <td style="width: 50%">: KG</td>
+                    <td style="width: 50%">: {{ $shipment->weight }} KG</td>
                     <td style="width: 14%">Dimension</td>
-                    <td>: 1 cm * 1 cm * 2 cm</td>
+                    <td>: {{ $shipment->dimension ?? '-' }}</td>
                 </tr>
             </table>
         </div>
@@ -323,18 +325,20 @@
                     <th style="width: 15%">Unit Value</th>
                     <th style="width: 15%">Total Value</th>
                 </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Tepung</td>
-                    <td>1</td>
-                    <td>100</td>
-                    <td>100</td>
-                </tr>
+                @foreach ($shipment->items as $item)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $item->description }}</td>
+                        <td>{{ $item->quantity }}</td>
+                        <td>{{ $item->value }}</td>
+                        <td>{{ $item->total_value }}</td>
+                    </tr>
+                @endforeach
                 <tr>
                     <th colspan="2">TOTAL</th>
-                    <td>1</td>
+                    <td>{{ $shipment->sum_quantity }}</td>
                     <td></td>
-                    <td>100</td>
+                    <td>{{ $shipment->sum_total_value }}</td>
                 </tr>
             </table>
         </div>
