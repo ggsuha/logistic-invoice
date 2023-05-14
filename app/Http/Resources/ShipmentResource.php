@@ -26,30 +26,27 @@ class ShipmentResource extends JsonResource
                 'id' => $this->id,
                 'number' => $this->number,
                 'air_waybill' => $this->air_waybill,
+                'category_id' => $this->category_id,
+                'weight' => $this->weight,
+                'content' => $this->content,
+                'pcs' => $this->pcs,
+                'value' => $this->value,
+                'dimension' => $this->dimension,
             ],
             'shipper' => [
                 'name' => $this->shipper->name,
                 'phone' => $this->shipper->phone,
+                'address' => $this->shipper->address,
             ],
             'receiver' => [
+                'id' => $this->receiver->id,
                 'name' => $this->receiver->name,
                 'phone' => $this->receiver->phone,
                 'address' => [
                     'street' => $this->receiver->address->street,
-                    'country' => $this->receiver->address->country,
-                    'postal_code' => $this->receiver->address->postal_code,
+                    'country_id' => $this->receiver->address->postalCode->country_id,
+                    'postal_code_id' => $this->receiver->address->postal_code_id,
                 ]
-            ],
-            'item' => [
-                'name' => $this->item->name,
-                'quantity' => $this->item->quantity,
-                'weight' => $this->item->weight,
-                'weight_unit' => $this->item->weight_unit,
-                'custom_value' => $this->item->custom_value,
-                'x_axis' => $this->item->x_axis,
-                'y_axis' => $this->item->y_axis,
-                'z_axis' => $this->item->z_axis,
-                'dimension_unit' => $this->item->dimension_unit,
             ]
         ];
     }

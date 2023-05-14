@@ -60,8 +60,7 @@
             <div class="form-group">
               <label for="receiver_postal_code">Kode Pos</label>
               <BKSelect id="receiver_postal_code" v-model.number="form.receiver.address.postal_code_id"
-                :data-placeholder="'Pilih kode pos'" allow-empty>
-                <option v-for="option in postal_codes" :key="option.id" :value="option.id">{{ option.value }}</option>
+                :data-placeholder="'Pilih kode pos'" allow-empty :options="postal_codes">
               </BKSelect>
             </div>
           </div>
@@ -104,8 +103,8 @@
                 </div>
                 <div class="col-12 col-sm-12 col-md-6">
                   <div class="form-group">
-                    <label for="item_weight">Pcs</label>
-                    <input id="item_weight" v-model="form.shipment.pcs" type="text" class="form-control"
+                    <label for="pcs">Pcs</label>
+                    <input id="pcs" v-model="form.shipment.pcs" type="text" class="form-control"
                       placeholder="Jumlah paket / koli" />
                   </div>
                 </div>
@@ -121,8 +120,8 @@
                 </div>
                 <div class="col-12 col-sm-12 col-md-6">
                   <div class="form-group">
-                    <label for="item_custom_value">Dimensi</label>
-                    <input id="item_custom_value" v-model="form.shipment.dimension" type="text" class="form-control"
+                    <label for="dimension">Dimensi</label>
+                    <input id="dimension" v-model="form.shipment.dimension" type="text" class="form-control"
                       placeholder="Contoh: 100 cm" />
                   </div>
                 </div>
@@ -155,9 +154,10 @@ import { Head, useForm } from "@inertiajs/vue3";
 import { useRoute } from "@/scripts/utils/ziggy/useRoute";
 import { BKSelect } from "@timedoor/baskito-ui";
 import swal from "sweetalert";
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import axios from "axios";
 import PageTitle from "@/views/components/admin/layout/Page/PageTitle.vue";
+import HuSelect from "@/views/components/HuSelect.vue";
 
 const { route } = useRoute();
 
@@ -221,6 +221,15 @@ const form = useForm({
   // }
 });
 
+onMounted(() => {
+  console.log(form.receiver.address.postal_code_id);
+
+  if (props.shipment != null) {
+    getPostalCodes(form.receiver.address.country_id)
+    form.receiver.address.postal_code_id = props.shipment?.receiver?.address?.postal_code_id
+  }
+})
+
 watch(() => form.receiver.address.country_id, async (id) => {
   if (id == null) {
     postal_codes.value = [{}]
@@ -228,14 +237,20 @@ watch(() => form.receiver.address.country_id, async (id) => {
     return
   }
 
+  getPostalCodes(id, true)
+})
+
+function getPostalCodes(id: number, refresh = false) {
   axios
     .get(route("admin.postalcode", { id: id }))
     .then((response: object) => {
-      form.receiver.address.postal_code_id = null;
+      if (refresh) {
+        form.receiver.address.postal_code_id = null;
+      }
 
-      postal_codes.value = response.data.data
+      postal_codes.value = response.data
     });
-})
+}
 
 function submit() {
   if (props.shipment == null) {

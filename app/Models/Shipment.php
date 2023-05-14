@@ -29,7 +29,7 @@ class Shipment extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id',
+        'receiver_id',
         'category_id',
         'number',
         'air_waybill',

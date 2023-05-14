@@ -23,7 +23,7 @@ class PostalCodeResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'value' => $this->postal_code . ($this->city ? " / {$this->city}" : '') . ($this->state ? " / {$this->state}" : ''),
+            'text' => $this->postal_code . ($this->city ? " / {$this->city}" : '') . ($this->state ? " / {$this->state}" : ''),
         ];
     }
 }

@@ -24,7 +24,7 @@ class Receiver extends Model
     /**
      * Get the shipment associated with the receiver.
      */
-    public function shipment(): HasMany
+    public function shipments(): HasMany
     {
         return $this->hasMany(Shipment::class);
     }
