@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,6 +21,11 @@ class Shipment extends Model
     {
         static::creating(function (Shipment $shipment) {
             $shipment->number = time();
+        });
+
+        static::created(function (Shipment $shipment) {
+            $shipment->air_waybill = (int)(Carbon::now()->format('ym') . '00000000') + $shipment->id;
+            $shipment->save();
         });
     }
 
