@@ -23,7 +23,10 @@ Route::group(['middleware' => ['auth:web']], function () {
     })->name('dashboard');
 
     Route::resource('shipment', ShipmentController::class)->except(['show', 'destroy']);
+
     Route::post('shipment/{shipment}/items', [ShipmentItemController::class, 'store'])->name('shipment.item.store');
+    Route::delete('shipment/{shipment}/items/{id}', [ShipmentItemController::class, 'destroy'])->name('shipment.item.destroy');
+
     Route::resource('category', CategoryController::class)->except(['show']);
 
     Route::get('shipment/{shipment}/invoice', [ShipmentInvoiceController::class, 'print'])->name('shipment.invoice');

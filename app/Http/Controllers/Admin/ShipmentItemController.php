@@ -26,11 +26,14 @@ class ShipmentItemController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Shipment  $shipment
+     * @param  string $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Shipment $shipment)
+    public function destroy(Shipment $shipment, $id)
     {
-        $shipment->delete();
+        $item = $shipment->items()->whereId($id)->firstOrFail();
+
+        $item->delete();
 
         return redirect()->back();
     }

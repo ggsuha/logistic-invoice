@@ -129,10 +129,6 @@
             </section>
             <div class="form-group row mb-4">
               <div class="col-12">
-                <a v-if="shipment" target="_blank"
-                  :href="$route('admin.shipment.invoice', { shipment: shipment.shipment.id })" class="btn btn-warning">
-                  Print Invoice
-                </a>
                 <button class="btn btn-primary float-right" @click="submit">
                   {{ action }} Order
                 </button>
@@ -177,7 +173,8 @@
                         <td>{{ item.value }}</td>
                         <td>{{ item.quantity * item.value }}</td>
                         <td>
-                          <button class="btn btn-danger" title="Hapus"><i class="fas fa-trash"></i>
+                          <button class="btn btn-danger" title="Hapus" @click="removeItem(item.id)"><i
+                              class="fas fa-trash"></i>
                           </button>
                         </td>
                       </tr>
@@ -193,6 +190,11 @@
                 </table>
               </div>
               <PaginationSection :links="items?.links" />
+
+              <a v-if="(items?.data?.length > 0)" target="_blank"
+                :href="$route('admin.shipment.invoice', { shipment: shipment.shipment.id })" class="btn btn-warning">
+                Print Invoice
+              </a>
             </div>
           </div>
         </div>
@@ -244,7 +246,7 @@
 
 <script setup lang="ts">
 import PageSection from "@components/admin/layout/Page/PageSection.vue";
-import { Head, useForm } from "@inertiajs/vue3";
+import { Head, useForm, router } from "@inertiajs/vue3";
 import { useRoute } from "@/scripts/utils/ziggy/useRoute";
 import { BKSelect } from "@timedoor/baskito-ui";
 import swal from "sweetalert";
@@ -400,6 +402,23 @@ function modalClose() {
   closeButton.click();
 
   modalForm.reset();
+}
+
+function removeItem(id: number) {
+  swal(`Apakah anda yakin??`, {
+    buttons: ["Tidak", "Ya"],
+    dangerMode: true,
+  }).then((ok) => {
+    if (ok) {
+      router.delete(route('admin.shipment.item.destroy', { shipment: props.shipment.shipment.id, id: id }), {
+        preserveScroll: true,
+        preserveState: true,
+        onSuccess: () => {
+          swal('Item berhasil dihapus!');
+        }
+      });
+    }
+  });
 }
 </script>
 
