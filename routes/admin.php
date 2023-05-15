@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\PasswordController;
 use App\Http\Controllers\Admin\PostalCodeController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ShipmentController;
@@ -25,6 +26,8 @@ Route::group(['middleware' => ['auth:web']], function () {
 
     Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    Route::post('password', [PasswordController::class, 'update'])->name('password.update');
 
     Route::resource('category', CategoryController::class)->except(['show']);
 

@@ -57,6 +57,43 @@
         </div>
       </div>
     </div>
+
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-12 col-sm-12">
+        <div class="card">
+          <div class="card-header">
+            <h4>Password</h4>
+          </div>
+          <div class="card-body">
+            <section>
+              <div class="form-group">
+                <label for="old">Password Lama</label>
+                <input id="old" v-model="passwordForm.old" type="password" class="form-control"
+                  placeholder="Masukkan password lama" autocomplete="off" />
+              </div>
+              <div class="form-group">
+                <label for="new-password">Password Baru</label>
+                <input id="new-password" v-model="passwordForm.password" type="password" class="form-control"
+                  placeholder="Masukkan password baru" autocomplete="off" />
+              </div>
+              <div class="form-group">
+                <label for="confirm-password">Konfirmasi Password Baru</label>
+                <input id="confirm-password" v-model="passwordForm.password_confirmation" type="password"
+                  class="form-control" placeholder="Masukkan konfirmasi password baru" autocomplete="off" />
+              </div>
+
+            </section>
+            <div class="form-group row mb-4">
+              <div class="col-12">
+                <button class="btn btn-primary float-right" @click="passwordSubmit">
+                  Ubah password
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </PageSection>
 </template>
 
@@ -83,6 +120,12 @@ const form = useForm({
   logo: null,
 });
 
+const passwordForm = useForm({
+  old: null,
+  password: null,
+  password_confirmation: null,
+});
+
 function changeImage(event: Event) {
   const file = event.target.files[0];
 
@@ -104,6 +147,17 @@ function submit() {
     {
       onSuccess: (response) => {
         swal("Data berhasil diubah.");
+      },
+    });
+}
+
+function passwordSubmit() {
+  passwordForm.post(
+    route("admin.password.update"),
+    {
+      onSuccess: (response) => {
+        swal("Password berhasil diubah.");
+        passwordForm.reset();
       },
     });
 }
