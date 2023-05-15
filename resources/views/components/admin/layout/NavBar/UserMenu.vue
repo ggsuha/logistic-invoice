@@ -7,9 +7,9 @@
       </div>
     </a>
     <div class="dropdown-menu dropdown-menu-right">
-      <a href="features-profile.html" class="dropdown-item has-icon">
-        <i class="far fa-user"></i> Pengaturan
-      </a>
+      <Link :href="$route('admin.profile.edit')" class="dropdown-item has-icon">
+      <i class="far fa-user"></i> Pengaturan
+      </Link>
       <div class="dropdown-divider"></div>
       <a href="#" class="dropdown-item has-icon text-danger" @click.prevent="logout">
         <i class="fas fa-sign-out-alt"></i> Keluar
@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 import { useRoute } from "@/scripts/utils/ziggy/useRoute";
-import { useForm, usePage } from "@inertiajs/vue3";
+import { useForm, usePage, Link } from "@inertiajs/vue3";
 import { computed } from "vue";
 
 const { route } = useRoute();

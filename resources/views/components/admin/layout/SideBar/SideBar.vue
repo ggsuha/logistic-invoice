@@ -21,7 +21,7 @@
         <SideBarLink icon="fas fa-clone" :href="$route('admin.category.index')" :active="routeIs('admin.category.index')">
           Kategori Order
         </SideBarLink>
-        <SideBarLink icon="fas fa-user" href="#">
+        <SideBarLink icon="fas fa-user" :href="$route('admin.profile.edit')" :active="routeIs('admin.profile.edit')">
           Akun
         </SideBarLink>
       </ul>

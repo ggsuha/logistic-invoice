@@ -9,7 +9,7 @@
             <section>
               <div class="form-group">
                 <label for="name">Nama</label>
-                <input id="name" v-model.number="form.name" type="type" class="form-control" placeholder="Contoh: Makanan"
+                <input id="name" v-model="form.name" type="text" class="form-control" placeholder="Contoh: Makanan"
                   autocomplete="off" />
               </div>
 
