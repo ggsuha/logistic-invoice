@@ -13,7 +13,9 @@
               <div class="form-group">
                 <label for="name">Nama Perusahaan</label>
                 <input id="name" v-model="form.name" type="text" class="form-control"
-                  placeholder="Contoh: Joko Widodo Corp" autocomplete="off" />
+                  :class="{ 'is-invalid': form.errors.name }" placeholder="Contoh: Joko Widodo Corp" autocomplete="off" />
+                <div v-if="form.errors.name" class="invalid-feedback">
+                  {{ form.errors.name }}</div>
               </div>
               <div class="form-group">
                 <label for="email">Email</label>
@@ -22,18 +24,26 @@
               <div class="form-group">
                 <label for="phone_number">Nomor Telepon</label>
                 <input id="phone_number" v-model="form.phone" type="text" class="form-control"
-                  placeholder="Contoh: 082131303789" autocomplete="off" />
+                  :class="{ 'is-invalid': form.errors.phone }" placeholder="Contoh: 082131303789" autocomplete="off" />
+                <div v-if="form.errors.phone" class="invalid-feedback">
+                  {{ form.errors.phone }}</div>
               </div>
               <div class="form-group">
                 <label for="address">Alamat</label>
-                <textarea id="address" v-model="form.address" class="form-control" style="height: 100%;" rows="4"
+                <textarea id="address" v-model="form.address" class="form-control"
+                  :class="{ 'is-invalid': form.errors.address }" style="height: 100%;" rows="4"
                   placeholder="Contoh: Jalan Pemuda no 15, Cengkareng Selatan" autocomplete="off"></textarea>
+                <div v-if="form.errors.address" class="invalid-feedback">
+                  {{ form.errors.address }}</div>
               </div>
 
               <div class="form-group">
-                <label for="header">Header</label>
-                <input id="header" v-model="form.header" type="text" class="form-control"
-                  placeholder="Contoh: Global Logistic" autocomplete="off" />
+                <label for="header_children">Header</label>
+                <input id="header_children" v-model="form.header" type="text" class="form-control"
+                  :class="{ 'is-invalid': form.errors.header }" placeholder="Contoh: Global Logistic"
+                  autocomplete="off" />
+                <div v-if="form.errors.header" class="invalid-feedback">
+                  {{ form.errors.header }}</div>
               </div>
 
               <div class="form-group">
@@ -69,12 +79,18 @@
               <div class="form-group">
                 <label for="old">Password Lama</label>
                 <input id="old" v-model="passwordForm.old" type="password" class="form-control"
-                  placeholder="Masukkan password lama" autocomplete="off" />
+                  :class="{ 'is-invalid': passwordForm.errors.old }" placeholder="Masukkan password lama"
+                  autocomplete="off" />
+                <div v-if="passwordForm.errors.old" class="invalid-feedback">
+                  {{ passwordForm.errors.old }}</div>
               </div>
               <div class="form-group">
                 <label for="new-password">Password Baru</label>
                 <input id="new-password" v-model="passwordForm.password" type="password" class="form-control"
-                  placeholder="Masukkan password baru" autocomplete="off" />
+                  :class="{ 'is-invalid': passwordForm.errors.password }" placeholder="Masukkan password baru"
+                  autocomplete="off" />
+                <div v-if="passwordForm.errors.password" class="invalid-feedback">
+                  {{ passwordForm.errors.password }}</div>
               </div>
               <div class="form-group">
                 <label for="confirm-password">Konfirmasi Password Baru</label>
@@ -145,6 +161,7 @@ function submit() {
   })).post(
     route("admin.profile.update"),
     {
+      preserveScroll: true,
       onSuccess: (response) => {
         swal("Data berhasil diubah.");
       },
@@ -155,6 +172,7 @@ function passwordSubmit() {
   passwordForm.post(
     route("admin.password.update"),
     {
+      preserveScroll: true,
       onSuccess: (response) => {
         swal("Password berhasil diubah.");
         passwordForm.reset();
