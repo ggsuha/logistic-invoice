@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PasswordController;
 use App\Http\Controllers\Admin\PostalCodeController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\ReceiverController;
 use App\Http\Controllers\Admin\ShipmentController;
 use App\Http\Controllers\Admin\ShipmentInvoiceController;
 use App\Http\Controllers\Admin\ShipmentItemController;
@@ -33,7 +34,8 @@ Route::group(['middleware' => ['auth:web']], function () {
 
     Route::get('shipment/{shipment}/invoice', [ShipmentInvoiceController::class, 'print'])->name('shipment.invoice');
 
+    Route::get('/receiver/{receiver}', [ReceiverController::class, 'show'])->name('receiver.show');
+    Route::get('/postal-code/{id}', [PostalCodeController::class, 'index'])->name('postalcode');
+
     Route::delete('logout', [LoginController::class, 'logout'])->name('logout');
 });
-
-Route::get('/postal-code/{id}', [PostalCodeController::class, 'index'])->name('postalcode');

@@ -36,6 +36,14 @@
           </div>
           <div class="card-body">
             <div class="form-group">
+              <BKSelect v-model.number="selected_receiver" :data-placeholder="'Pilih data penerima yang sudah ada'"
+                allow-empty>
+                <option v-for="option in receivers" :key="option.id" :value="option.id">{{
+                  option.name }} / {{
+    option.phone }}</option>
+              </BKSelect>
+            </div>
+            <div class="form-group">
               <label for="receiver_name">Nama</label>
               <input id="receiver_name" v-model="form.receiver.name" type="text" class="form-control" autofocus
                 placeholder="Contoh: Park Ji Sung" />
@@ -274,9 +282,14 @@ const props = defineProps({
   items: {
     type: Object,
     default: []
-  }
+  },
+  receivers: {
+    type: Object,
+    default: []
+  },
 })
 
+const selected_receiver = ref(null);
 const postal_codes = ref([{}]);
 const unit_options = ref([
   { id: 'set', text: "Set" },
@@ -314,19 +327,8 @@ const form = useForm({
     }
   },
   country_id: props.shipment?.receiver?.address?.country_id,
-  // item: {
-  //   name: props.shipment?.item?.name,
-  //   quantity: props.shipment?.item?.quantity,
-  //   weight: props.shipment?.item?.weight,
-  //   weight_unit: props.shipment?.item?.weight_unit,
-  //   custom_value: props.shipment?.item?.custom_value,
-  //   x_axis: props.shipment?.item?.x_axis,
-  //   y_axis: props.shipment?.item?.y_axis,
-  //   z_axis: props.shipment?.item?.z_axis,
-  //   dimension_unit: props.shipment?.item?.dimension_unit ?? 'cm',
-  // }
+  postal: null,
 });
-
 
 const modalForm = useForm({
   description: null,
@@ -352,6 +354,30 @@ watch(() => form.country_id, async (id) => {
   getPostalCodes(id, true)
 })
 
+watch(() => form.receiver.address.postal_code_id, async (id, old) => {
+  if (id == null && selected_receiver.value != null) {
+    form.receiver.address.postal_code_id = old
+  }
+})
+
+watch(selected_receiver, async (id, old) => {
+  if (id == old) {
+    return
+  }
+
+  axios
+    .get(route("admin.receiver.show", { receiver: id }))
+    .then((response: object) => {
+      form.country_id = response.data.address.postal_code.country_id
+      form.receiver.id = response.data.id
+      form.receiver.name = response.data.name
+      form.receiver.phone = response.data.phone
+      form.receiver.address.street = response.data.address.street
+      form.receiver.address.postal_code_id = response.data.address.postal_code_id
+      form.postal = response.data.address.postal_code_id
+    });
+})
+
 function getPostalCodes(id: number, refresh = false) {
   axios
     .get(route("admin.postalcode", { id: id }))
@@ -361,6 +387,11 @@ function getPostalCodes(id: number, refresh = false) {
       }
 
       postal_codes.value = response.data
+
+      if (postal_codes.value.data && form.postal) {
+        form.receiver.address.postal_code_id = form.postal
+
+      }
     });
 }
 

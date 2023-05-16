@@ -38,8 +38,9 @@ class ShipmentController extends Controller
     {
         $countries = Country::select('id', 'name')->get();
         $categories = Category::select('id', 'name')->get();
+        $receivers = Receiver::get();
 
-        return inertia('admin.shipment.form', compact('countries', 'categories'));
+        return inertia('admin.shipment.form', compact('countries', 'categories', 'receivers'));
     }
 
     /**
@@ -54,6 +55,7 @@ class ShipmentController extends Controller
         try {
             if (isset($request->receiver['id'])) {
                 $receiver = Receiver::findOrFail($request->receiver['id']);
+
                 $receiver->update($request->receiver);
                 $receiver->address()->update($request->receiver['address']);
             } else {
@@ -90,12 +92,14 @@ class ShipmentController extends Controller
 
         $countries = Country::select('id', 'name')->get();
         $categories = Category::select('id', 'name')->get();
+        $receivers = Receiver::get();
 
         return inertia('admin.shipment.form', [
             'shipment' => ShipmentResource::make($shipment),
             'countries' => $countries,
             'categories' => $categories,
             'items' => $items,
+            'receivers' => $receivers,
         ]);
     }
 
@@ -120,7 +124,7 @@ class ShipmentController extends Controller
                 $receiver->address()->create($request->receiver['address']);
             }
 
-            $shipment->update($request->shipment);
+            $shipment->update($request->shipment + ['receiver_id' => $receiver->id]);
             $shipment->shipper()->update($request->shipper);
 
             DB::commit();
