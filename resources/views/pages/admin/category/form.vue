@@ -8,9 +8,11 @@
           <div class="card-body">
             <section>
               <div class="form-group">
-                <label for="name">Nama</label>
-                <input id="name" v-model="form.name" type="text" class="form-control" placeholder="Contoh: Makanan"
-                  autocomplete="off" />
+                <label for="category">Nama</label>
+                <input id="category" v-model="form.name" type="text" class="form-control"
+                  :class="{ 'is-invalid': form.errors.name }" placeholder="Contoh: Makanan" autocomplete="off" />
+                <div v-if="form.errors.name" class="invalid-feedback">
+                  {{ form.errors.name }}</div>
               </div>
 
             </section>
