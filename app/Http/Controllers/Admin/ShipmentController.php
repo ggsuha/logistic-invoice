@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ShipmentRequest;
 use App\Http\Resources\ShipmentResource;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Receiver;
 use App\Models\Shipment;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ShipmentController extends Controller
@@ -46,10 +46,10 @@ class ShipmentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\ShipmentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ShipmentRequest $request)
     {
         DB::beginTransaction();
         try {
@@ -106,11 +106,11 @@ class ShipmentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\ShipmentRequest  $request
      * @param  \App\Models\Shipment  $shipment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Shipment $shipment)
+    public function update(ShipmentRequest $request, Shipment $shipment)
     {
         DB::beginTransaction();
         try {

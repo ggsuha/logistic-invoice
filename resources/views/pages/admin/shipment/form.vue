@@ -12,18 +12,27 @@
           <div class="card-body">
             <div class="form-group">
               <label for="shipper_name">Nama</label>
-              <input id="shipper_name" v-model="form.shipper.name" type="text" class="form-control" autofocus
-                placeholder="Contoh: Budi Gemilang" autocomplete="off" />
+              <input id="shipper_name" v-model="form.shipper.name" type="text" class="form-control"
+                :class="{ 'is-invalid': form.errors['shipper.name'] }" placeholder="Contoh: Budi Gemilang"
+                autocomplete="off" />
+              <div v-if="form.errors['shipper.name']" class="invalid-feedback">
+                {{ form.errors['shipper.name'] }}</div>
             </div>
             <div class="form-group">
               <label for="shipper_phone">Nomor Telepon</label>
               <input id="shipper_phone" v-model="form.shipper.phone" type="text" class="form-control"
-                placeholder="Contoh: 085272383281" autocomplete="off" />
+                :class="{ 'is-invalid': form.errors['shipper.phone'] }" placeholder="Contoh: 085272383281"
+                autocomplete="off" />
+              <div v-if="form.errors['shipper.phone']" class="invalid-feedback">
+                {{ form.errors['shipper.phone'] }}</div>
             </div>
             <div class="form-group">
               <label for="shipper_address">Alamat</label>
-              <textarea id="shipper_address" v-model="form.shipper.address" class="form-control" style="height: 100%;"
-                rows="4" placeholder="Contoh: Jalan Pemuda no 15, Cengkareng Selatan" autocomplete="off"></textarea>
+              <textarea id="shipper_address" v-model="form.shipper.address" class="form-control"
+                :class="{ 'is-invalid': form.errors['shipper.address'] }" style="height: 100%;" rows="4"
+                placeholder="Contoh: Jalan Pemuda no 15, Cengkareng Selatan" autocomplete="off"></textarea>
+              <div v-if="form.errors['shipper.address']" class="invalid-feedback">
+                {{ form.errors['shipper.address'] }}</div>
             </div>
           </div>
         </div>
@@ -45,32 +54,46 @@
             </div>
             <div class="form-group">
               <label for="receiver_name">Nama</label>
-              <input id="receiver_name" v-model="form.receiver.name" type="text" class="form-control" autofocus
-                placeholder="Contoh: Park Ji Sung" />
+              <input id="receiver_name" v-model="form.receiver.name" type="text" class="form-control"
+                :class="{ 'is-invalid': form.errors['receiver.name'] }" placeholder="Contoh: Park Ji Sung"
+                autocomplete="off" />
+              <div v-if="form.errors['receiver.name']" class="invalid-feedback">
+                {{ form.errors['receiver.name'] }}</div>
             </div>
             <div class="form-group">
               <label for="receiver_phone">Nomor Telepon</label>
               <input id="receiver_phone" v-model="form.receiver.phone" type="text" class="form-control"
-                placeholder="Contoh: 01 2827 2727" />
+                :class="{ 'is-invalid': form.errors['receiver.phone'] }" placeholder="Contoh: 01 2827 2727"
+                autocomplete="off" />
+              <div v-if="form.errors['receiver.phone']" class="invalid-feedback">
+                {{ form.errors['receiver.phone'] }}</div>
             </div>
             <div class="form-group">
               <label for="receiver_address">Alamat</label>
               <textarea id="receiver_address" v-model.number="form.receiver.address.street" class="form-control"
-                style="height: 100%;" rows="4"
-                placeholder="Contoh: #205, 426-14, Gung-dong, Yuseong-gu, Daejeon"></textarea>
+                :class="{ 'is-invalid': form.errors['receiver.address.street'] }" style="height: 100%;" rows="4"
+                placeholder="Contoh: #205, 426-14, Gung-dong, Yuseong-gu, Daejeon" autocomplete="off"></textarea>
+              <div v-if="form.errors['receiver.address.street']" class="invalid-feedback">
+                {{ form.errors['receiver.address.street'] }}</div>
             </div>
             <div class="form-group">
               <label for="receiver_country">Negara</label>
+              <input type="hidden" name="n" :class="{ 'is-invalid': form.errors.country_id }">
               <BKSelect id="receiver_country" v-model.number="form.country_id" :data-placeholder="'Pilih negara tujuan'"
                 allow-empty>
                 <option v-for="option in countries" :key="option.id" :value="option.id">{{ option.name }}</option>
               </BKSelect>
+              <div v-if="form.errors.country_id" class="invalid-feedback">
+                {{ form.errors.country_id }}</div>
             </div>
             <div class="form-group">
               <label for="receiver_postal_code">Kode Pos</label>
+              <input type="hidden" name="p" :class="{ 'is-invalid': form.errors['receiver.address.postal_code_id'] }">
               <BKSelect id="receiver_postal_code" v-model.number="form.receiver.address.postal_code_id"
                 :data-placeholder="'Pilih kode pos'" allow-empty :options="postal_codes">
               </BKSelect>
+              <div v-if="form.errors['receiver.address.postal_code_id']" class="invalid-feedback">
+                {{ form.errors['receiver.address.postal_code_id'] }}</div>
             </div>
           </div>
         </div>
@@ -87,17 +110,23 @@
                 <div class="col-12 col-sm-12 col-md-6">
                   <div class="form-group">
                     <label for="type">Jenis Paket</label>
+                    <input type="hidden" name="t" :class="{ 'is-invalid': form.errors['shipment.category_id'] }">
                     <BKSelect id="type" v-model.number="form.shipment.category_id" :data-placeholder="'Pilih jenis paket'"
                       allow-empty>
                       <option v-for="option in categories" :key="option.id" :value="option.id">{{ option.name }}</option>
                     </BKSelect>
+                    <div v-if="form.errors['shipment.category_id']" class="invalid-feedback">
+                      {{ form.errors['shipment.category_id'] }}</div>
                   </div>
                 </div>
                 <div class="col-12 col-sm-12 col-md-6">
                   <div class="form-group">
                     <label for="weight">Berat (Kg)</label>
                     <input id="weight" v-model.number="form.shipment.weight" type="number" min="1" class="form-control"
-                      placeholder="Contoh: 10" />
+                      :class="{ 'is-invalid': form.errors['shipment.weight'] }" placeholder="Contoh: 10"
+                      autocomplete="off" />
+                    <div v-if="form.errors['shipment.weight']" class="invalid-feedback">
+                      {{ form.errors['shipment.weight'] }}</div>
                   </div>
                 </div>
               </div>
@@ -107,14 +136,20 @@
                   <div class="form-group">
                     <label for="content">Detail Isi</label>
                     <input id="content" v-model="form.shipment.content" type="text" class="form-control"
-                      placeholder="Contoh: Food" />
+                      :class="{ 'is-invalid': form.errors['shipment.content'] }" placeholder="Contoh: Food"
+                      autocomplete="off" />
+                    <div v-if="form.errors['shipment.content']" class="invalid-feedback">
+                      {{ form.errors['shipment.content'] }}</div>
                   </div>
                 </div>
                 <div class="col-12 col-sm-12 col-md-6">
                   <div class="form-group">
                     <label for="pcs">Pcs</label>
                     <input id="pcs" v-model="form.shipment.pcs" type="text" class="form-control"
-                      placeholder="Jumlah paket / koli" />
+                      :class="{ 'is-invalid': form.errors['shipment.pcs'] }" placeholder="Jumlah paket / koli"
+                      autocomplete="off" />
+                    <div v-if="form.errors['shipment.pcs']" class="invalid-feedback">
+                      {{ form.errors['shipment.pcs'] }}</div>
                   </div>
                 </div>
               </div>
@@ -124,14 +159,20 @@
                   <div class="form-group">
                     <label for="item_custom_value">Value (USD)</label>
                     <input id="item_custom_value" v-model.number="form.shipment.value" type="number" class="form-control"
-                      placeholder="Contoh: 100" />
+                      :class="{ 'is-invalid': form.errors['shipment.value'] }" placeholder="Contoh: 100"
+                      autocomplete="off" />
+                    <div v-if="form.errors['shipment.value']" class="invalid-feedback">
+                      {{ form.errors['shipment.value'] }}</div>
                   </div>
                 </div>
                 <div class="col-12 col-sm-12 col-md-6">
                   <div class="form-group">
                     <label for="dimension">Dimensi</label>
                     <input id="dimension" v-model="form.shipment.dimension" type="text" class="form-control"
-                      placeholder="Contoh: 100 cm" />
+                      :class="{ 'is-invalid': form.errors['shipment.dimension'] }" placeholder="Contoh: 100 cm"
+                      autocomplete="off" />
+                    <div v-if="form.errors['shipment.dimension']" class="invalid-feedback">
+                      {{ form.errors['shipment.dimension'] }}</div>
                   </div>
                 </div>
               </div>
