@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -63,6 +64,31 @@ class Shipment extends Model
                 return implode(', ', $items);
             }
         );
+    }
+
+    /**
+     * Scope a query to only include popular users.
+     */
+    public function scopeKeyword(Builder $query): void
+    {
+        if (!request()->keyword) {
+            return;
+        }
+
+        $query->where('air_waybill', 'LIKE', '%' . request()->keyword . '%')
+            ->orWhereHas('receiver', function ($q) {
+                $q->where('name', 'LIKE', '%' . request()->keyword . '%')
+                    ->orWhere('phone', 'LIKE', '%' . request()->keyword . '%')
+                    ->orWhereHas('address', function ($q) {
+                        $q->where('street', 'LIKE', '%' . request()->keyword . '%')
+                            ->orWhereHas('postalCode', function ($q) {
+                                $q->where('postal_code', 'LIKE', '%' . request()->keyword . '%')
+                                    ->orWhereHas('country', function ($q) {
+                                        $q->where('name', 'LIKE', '%' . request()->keyword . '%');
+                                    });
+                            });
+                    });
+            });
     }
 
     /**

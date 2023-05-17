@@ -38,8 +38,8 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'versions' => [
-            	'php' => PHP_VERSION,
-            	'laravel' => \Illuminate\Foundation\Application::VERSION
+                'php' => PHP_VERSION,
+                'laravel' => \Illuminate\Foundation\Application::VERSION
             ],
             'flash' => [
                 'message' => fn () => $request->session()->get('message'),
@@ -47,6 +47,7 @@ class HandleInertiaRequests extends Middleware
             'auth.user' => fn () => $request->user()
                 ? $request->user()->only('id', 'name', 'email')
                 : null,
+            'query' => $request->query(),
         ]);
     }
 }

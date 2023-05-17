@@ -9,6 +9,12 @@
             <h4>Order</h4>
           </div>
           <div class="card-body">
+            <div class="float-right">
+              <div class="form-group">
+                <input id="keyword" v-model="filterForm.keyword" type="text" class="form-control"
+                  placeholder="Cari keyword" autocomplete="off" />
+              </div>
+            </div>
             <div class="table-responsive">
               <table class="table table-striped">
                 <thead>
@@ -64,11 +70,18 @@
 import Pagination from "@/views/components/pagination-section.vue";
 import PageSection from "@components/admin/layout/Page/PageSection.vue";
 import { useRoute } from "@/scripts/utils/ziggy/useRoute";
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
 import moment from "moment-timezone";
 import "moment/dist/locale/id";
+import { debounce } from 'lodash';
+import { watch } from "vue";
 
 const { route } = useRoute();
+
+const query = usePage().props.query;
+const filterForm = useForm({
+  keyword: query.keyword,
+});
 
 const props = defineProps({
   shipments: {
@@ -76,6 +89,17 @@ const props = defineProps({
     required: true,
   }
 })
+
+watch(() => filterForm.keyword, debounce(function (value: string) {
+  filter()
+}, 1000))
+
+function filter() {
+  filterForm.get(route('admin.shipment.index'), {
+    preserveScroll: true,
+    preserveState: true,
+  });
+}
 </script>
 
 <style scoped></style>
