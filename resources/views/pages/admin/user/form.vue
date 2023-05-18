@@ -49,7 +49,7 @@
               <div class="form-group">
                 <label for="logo">Logo</label>
                 <div v-if="props.user?.detail?.logo_url" style="width: 300px; margin-bottom: 10px;">
-                  <img style="width: 100%;" :src="props.user?.detail?.logo_url" alt="Logo">
+                  <img style="width: 100%; border: 1px gray solid;" :src="props.user?.detail?.logo_url" alt="Logo">
                 </div>
                 <input id="logo" type="file" accept="image/*" class="form-control" placeholder="Contoh: Global Logistic"
                   @change="changeImage" autocomplete="off" />
