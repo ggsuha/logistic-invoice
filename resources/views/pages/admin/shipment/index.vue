@@ -9,25 +9,31 @@
             <h4>Order</h4>
           </div>
           <div class="card-body">
-            <div class="form-row float-right">
-              <div class="col-12 col-sm-12 col-md-4">
+            <div class="form-row float-right" style="width: 100%;">
+              <div class="col-12 col-sm-12 col-md-3">
                 <div class="form-group">
                   <input id="start_date" v-model="filterForm.start_date" type="text" class="form-control"
                     onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Pilih tanggal mulai"
                     autocomplete="off" />
                 </div>
               </div>
-              <div class="col-12 col-sm-12 col-md-4">
+              <div class="col-12 col-sm-12 col-md-3">
                 <div class="form-group">
                   <input id="end_date" v-model="filterForm.end_date" type="text" class="form-control"
                     onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Pilih tanggal selesai"
                     autocomplete="off" />
                 </div>
               </div>
-              <div class="col-12 col-sm-12 col-md-4">
+              <div class="col-12 col-sm-12 col-md-4 col-lg-5">
                 <div class="form-group">
                   <input id="keyword" v-model="filterForm.keyword" type="text" class="form-control"
                     placeholder="Cari keyword" autocomplete="off" />
+                </div>
+              </div>
+              <div class="col-12 col-sm-12 col-md-2 col-lg-1">
+                <div class="form-group">
+                  <button class="btn btn-primary form-control" style="max-width: 111.83px;" @click="filterReset">Reset
+                    Filter</button>
                 </div>
               </div>
             </div>
@@ -117,6 +123,10 @@ function filter() {
     preserveScroll: true,
     preserveState: true,
   });
+}
+
+function filterReset() {
+  filterForm.keyword = filterForm.start_date = filterForm.end_date = null;
 }
 </script>
 

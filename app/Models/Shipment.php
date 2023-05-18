@@ -103,6 +103,10 @@ class Shipment extends Model
         $start_date = request()->start_date;
         $end_date = request()->end_date;
 
+        if (!$start_date && !$end_date) {
+            return;
+        }
+
         if ($start_date && $end_date) {
             $query->whereBetween('created_at', [$start_date, $end_date]);
         } else if (!$end_date) {
@@ -110,8 +114,6 @@ class Shipment extends Model
         } else if (!$start_date) {
             $query->where('created_at', '=<', $end_date);
         }
-
-        return;
     }
 
     /**
