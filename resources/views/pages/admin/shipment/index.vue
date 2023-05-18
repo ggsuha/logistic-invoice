@@ -9,10 +9,26 @@
             <h4>Order</h4>
           </div>
           <div class="card-body">
-            <div class="float-right">
-              <div class="form-group">
-                <input id="keyword" v-model="filterForm.keyword" type="text" class="form-control"
-                  placeholder="Cari keyword" autocomplete="off" />
+            <div class="form-row float-right">
+              <div class="col-12 col-sm-12 col-md-4">
+                <div class="form-group">
+                  <input id="start_date" v-model="filterForm.start_date" type="text" class="form-control"
+                    onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Pilih tanggal mulai"
+                    autocomplete="off" />
+                </div>
+              </div>
+              <div class="col-12 col-sm-12 col-md-4">
+                <div class="form-group">
+                  <input id="end_date" v-model="filterForm.end_date" type="text" class="form-control"
+                    onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Pilih tanggal selesai"
+                    autocomplete="off" />
+                </div>
+              </div>
+              <div class="col-12 col-sm-12 col-md-4">
+                <div class="form-group">
+                  <input id="keyword" v-model="filterForm.keyword" type="text" class="form-control"
+                    placeholder="Cari keyword" autocomplete="off" />
+                </div>
               </div>
             </div>
             <div class="table-responsive">
@@ -80,7 +96,9 @@ const { route } = useRoute();
 
 const query = usePage().props.query;
 const filterForm = useForm({
-  keyword: query.keyword,
+  keyword: query.keyword ?? null,
+  start_date: query.start_date ?? null,
+  end_date: query.end_date ?? null,
 });
 
 const props = defineProps({
@@ -90,7 +108,7 @@ const props = defineProps({
   }
 })
 
-watch(() => filterForm.keyword, debounce(function (value: string) {
+watch([() => filterForm.keyword, () => filterForm.start_date, () => filterForm.end_date], debounce(function () {
   filter()
 }, 1000))
 

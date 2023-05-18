@@ -67,7 +67,7 @@ class Shipment extends Model
     }
 
     /**
-     * Scope a query to only include popular users.
+     * Scope a query to only include certain keyword.
      */
     public function scopeKeyword(Builder $query): void
     {
@@ -88,7 +88,30 @@ class Shipment extends Model
                                     });
                             });
                     });
+            })
+            ->orWhereHas('shipper', function ($q) {
+                $q->where('name', 'LIKE', '%' . request()->keyword . '%')
+                    ->orWhere('phone', 'LIKE', '%' . request()->keyword . '%');
             });
+    }
+
+    /**
+     * Scope a query to only include spesific date.
+     */
+    public function scopeDate(Builder $query): void
+    {
+        $start_date = request()->start_date;
+        $end_date = request()->end_date;
+
+        if ($start_date && $end_date) {
+            $query->whereBetween('created_at', [$start_date, $end_date]);
+        } else if (!$end_date) {
+            $query->where('created_at', '>=', $start_date);
+        } else if (!$start_date) {
+            $query->where('created_at', '=<', $end_date);
+        }
+
+        return;
     }
 
     /**

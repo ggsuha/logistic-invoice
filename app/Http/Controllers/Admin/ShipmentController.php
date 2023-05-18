@@ -24,7 +24,7 @@ class ShipmentController extends Controller
             'receiver.address.postalCode.country',
             'shipper',
             'category'
-        ])->keyword()->paginate(10);
+        ])->keyword()->date()->paginate(10);
 
         return inertia('admin.shipment.index', compact('shipments'));
     }
