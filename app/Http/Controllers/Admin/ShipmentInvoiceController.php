@@ -33,13 +33,12 @@ class ShipmentInvoiceController extends Controller
 
         $now = now();
 
-        $barcode = base64_encode(DNS1DFacade::getBarcodeSVG($shipment->air_waybill, 'UPCA', 2, 80));
-        $qr = base64_encode(QrCode::format('svg')->size(300)->generate($shipment->air_waybill));
+        $barcode = base64_encode(DNS1DFacade::getBarcodeSVG($shipment->air_waybill, 'EAN13', 2, 80));
 
         $now = now();
 
         $pdf = App::make('snappy.pdf.wrapper');
-        $pdf->loadView('pdfs.invoice2', compact('qr', 'barcode', 'shipment', 'now', 'user'))
+        $pdf->loadView('pdfs.invoice2', compact('barcode', 'shipment', 'now', 'user'))
             ->setPaper('a4')->setOption('title', "Invoice-{$shipment->number}");
 
         return $pdf->inline();
