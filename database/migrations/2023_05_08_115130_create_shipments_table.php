@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('content');
             $table->string('pcs');
             $table->integer('value');
-            $table->string('dimension');
+            $table->string('dimension')->nullable();
             $table->timestamps();
         });
     }
