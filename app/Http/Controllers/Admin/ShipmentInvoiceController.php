@@ -33,7 +33,7 @@ class ShipmentInvoiceController extends Controller
 
         $now = now();
 
-        $barcode = base64_encode(DNS1DFacade::getBarcodeSVG($shipment->air_waybill, 'EAN13', 2, 80));
+        $barcode = base64_encode(DNS1DFacade::getBarcodeSVG($shipment->air_waybill, 'C128', 2, 80));
 
         $now = now();
 

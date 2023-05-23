@@ -439,6 +439,7 @@ function getPostalCodes(id: number, refresh = false) {
 function submit() {
   if (props.shipment == null) {
     form.post(route("admin.shipment.store"), {
+      preserveScroll: true,
       onSuccess: (response) => {
         swal("Data berhasil disimpan");
       },
@@ -448,6 +449,7 @@ function submit() {
     });
   } else {
     form.patch(route("admin.shipment.update", { shipment: props.shipment.shipment.id }), {
+      preserveScroll: true,
       onSuccess: (response) => {
         swal("Data berhasil diubah.");
       },
@@ -460,6 +462,7 @@ function submit() {
 
 function modalSubmit() {
   modalForm.post(route("admin.shipment.item.store", { shipment: props.shipment.shipment.id }), {
+    preserveScroll: true,
     onSuccess: (response) => {
       swal("Item berhasil ditambahkan.");
       modalClose();
