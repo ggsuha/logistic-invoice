@@ -23,11 +23,16 @@ class Shipment extends Model
     {
         static::creating(function (Shipment $shipment) {
             $shipment->number = time();
-        });
 
-        static::created(function (Shipment $shipment) {
-            $shipment->air_waybill = (int)(Carbon::now()->format('ym') . '00000000') + $shipment->id;
-            $shipment->save();
+            $date = Carbon::now()->format('dm');
+
+            $latestShipment = Shipment::where('air_waybill', 'like', "AG {$date}%")
+                ->orderBy('id', 'desc')
+                ->first();
+
+            $latestInvoice = (int) substr(optional($latestShipment)->air_waybill, 7, 2) + 1;
+
+            $shipment->air_waybill = sprintf('AG ' . $date . '%02d', $latestInvoice);
         });
     }
 

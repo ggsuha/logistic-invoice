@@ -2,7 +2,7 @@
   <Head :title="`${action} Order`" />
 
   <PageSection
-    :header="`${action} Order ${shipment?.shipment?.air_waybill ? '- Resi' : ''} ${shipment?.shipment?.air_waybill}`">
+    :header="`${action} Order ${shipment?.shipment?.air_waybill ? ('- ' + shipment?.shipment?.air_waybill) : ''}`">
     <div class="row">
       <div class="col-lg-6 col-md-12 col-12 col-sm-12">
         <div class="card">
