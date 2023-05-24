@@ -173,6 +173,13 @@
                 </div>
             </div>
             <div class="row">
+                <strong>Sender:</strong><br>
+                <div class="flex">
+                    <div class="upper left">{{ $shipment->shipper->name }}</div>
+                </div>
+                {{ $shipment->shipper->phone }} <br>
+            </div>
+            <div class="row">
                 <div class="flex">
                     <div class="left">
                         <strong>Description of Goods: {{ $shipment->category->name }}</strong><br>
